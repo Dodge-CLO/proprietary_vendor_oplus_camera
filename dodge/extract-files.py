@@ -322,9 +322,10 @@ def report_verification() -> bool:
     return True
 
 blob_fixups = {
-    # Keep libNativeWinBuffExchange loadable, APS needs pfnAPSMemHWAcquire.
+    # Fail these dlopens so APS takes the Java HEIF route like stock.
     'system_ext/lib64/libAPSClient-cmd-jni.so': blob_fixup()
-        .binary_regex_replace(b'libHeifEncoderWrapper\\.so', b'xibHeifEncoderWrapper.so'),
+        .binary_regex_replace(rb'\x00libHeifEncoderWrapper\.so\x00', b'\x00xibHeifEncoderWrapper.so\x00')
+        .binary_regex_replace(rb'\x00libNativeWinBuffExchange\.so\x00', b'\x00xibNativeWinBuffExchange.so\x00'),
     'system_ext/lib64/libAPSClient-cmd-jni-extension.oplus.so': blob_fixup()
         .binary_regex_replace(b'libHeifEncoderWrapper\\.so', b'xibHeifEncoderWrapper.so'),
     'system_ext/lib64/libcsextimpl.so': blob_fixup()
