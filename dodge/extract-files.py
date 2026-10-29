@@ -322,13 +322,11 @@ def report_verification() -> bool:
     return True
 
 blob_fixups = {
+    # Keep libNativeWinBuffExchange loadable, APS needs pfnAPSMemHWAcquire.
     'system_ext/lib64/libAPSClient-cmd-jni.so': blob_fixup()
-        .binary_regex_replace(b'libHeifEncoderWrapper\\.so', b'xibHeifEncoderWrapper.so')
-        .binary_regex_replace(b'libNativeWinBuffExchange\\.so', b'xibNativeWinBuffExchange.so'),
-    # No releaseBuffer fixup, the COS17 blob already passes the fence.
+        .binary_regex_replace(b'libHeifEncoderWrapper\\.so', b'xibHeifEncoderWrapper.so'),
     'system_ext/lib64/libAPSClient-cmd-jni-extension.oplus.so': blob_fixup()
-        .binary_regex_replace(b'libHeifEncoderWrapper\\.so', b'xibHeifEncoderWrapper.so')
-        .binary_regex_replace(b'libNativeWinBuffExchange\\.so', b'xibNativeWinBuffExchange.so'),
+        .binary_regex_replace(b'libHeifEncoderWrapper\\.so', b'xibHeifEncoderWrapper.so'),
     'system_ext/lib64/libcsextimpl.so': blob_fixup()
         .replace_needed(
             'android.hardware.camera.provider-V3-ndk.so',
