@@ -1,0 +1,4 @@
+# APS deferred-capture storage, as in stock init.oplus.rootdir.rc
+on post-fs-data
+    mkdir /data/system/camera_rus 0777 cameraserver cameraserver
+    mkdir /data/vendor/camera_rus 0777 camera camera

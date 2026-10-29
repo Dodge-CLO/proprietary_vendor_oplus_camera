@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Saikiran <bjsaikiran@gmail.com>
+Date: Thu, 29 Oct 2026 08:10:13 +0000
+Subject: [PATCH 2/2] Look for the camera JNI libs in system_ext
+
+COS17 resolves the camera app lib directory to /apex/com.oplus.camera.app/lib64
+when that APEX exists and to /product/lib64 otherwise. The OTA ships no such
+APEX, and we install the libs to /system_ext/lib64, so point the fallback
+there. OplusFaceBeautyPreview builds its ProductJni probe from this path.
+---
+ .../ocs/camera/consumer/apsAdapter/adapter/ApsUtils.smali     | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/smali/com/oplus/ocs/camera/consumer/apsAdapter/adapter/ApsUtils.smali b/smali/com/oplus/ocs/camera/consumer/apsAdapter/adapter/ApsUtils.smali
+index 92ba393..f019c7a 100644
+--- a/smali/com/oplus/ocs/camera/consumer/apsAdapter/adapter/ApsUtils.smali
++++ b/smali/com/oplus/ocs/camera/consumer/apsAdapter/adapter/ApsUtils.smali
+@@ -84,7 +84,7 @@
+ 
+ .field private static final PROC_MEMINFO_PATH:Ljava/lang/String; = "/proc/meminfo"
+ 
+-.field private static final PRODUCT_LIB_DIR:Ljava/lang/String; = "/product/lib64"
++.field private static final PRODUCT_LIB_DIR:Ljava/lang/String; = "/system_ext/lib64"
+ 
+ .field public static final RECORDING:Ljava/lang/String; = "surface_key_recording"
+ 
+@@ -960,7 +960,7 @@
+     return-object v0
+ 
+     :cond_0
+-    const-string v0, "/product/lib64"
++    const-string v0, "/system_ext/lib64"
+ 
+     return-object v0
+ .end method

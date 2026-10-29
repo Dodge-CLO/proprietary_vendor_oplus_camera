@@ -1,0 +1,109 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Saikiran <bjsaikiran@gmail.com>
+Date: Thu, 29 Oct 2026 08:10:13 +0000
+Subject: [PATCH 1/2] fixes
+
+Drop the explicit false/null initializers on static fields, as the
+aston and giulia SDK patches do.
+---
+ smali/com/google/oplus/protobuf/ExtensionRegistryLite.smali | 2 +-
+ smali/com/oplus/ocs/camera/UxThreadPool.smali               | 4 ++--
+ .../ocs/camera/common/parameter/apsadapter/ApsHelper.smali  | 2 +-
+ .../ocs/camera/common/util/OsenseKeyThreadHelper.smali      | 2 +-
+ smali/com/oplus/ocs/camera/consumer/ApsDataConvert.smali    | 2 +-
+ smali/com/oplus/ocs/camera/consumer/apsAdapter/ALog.smali   | 6 +++---
+ 6 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/smali/com/google/oplus/protobuf/ExtensionRegistryLite.smali b/smali/com/google/oplus/protobuf/ExtensionRegistryLite.smali
+index 4baa859..17c1396 100644
+--- a/smali/com/google/oplus/protobuf/ExtensionRegistryLite.smali
++++ b/smali/com/google/oplus/protobuf/ExtensionRegistryLite.smali
+@@ -19,7 +19,7 @@
+ 
+ .field private static doFullRuntimeInheritanceCheck:Z = true
+ 
+-.field private static volatile eagerlyParseMessageSets:Z = false
++.field private static volatile eagerlyParseMessageSets:Z
+ 
+ .field private static volatile emptyRegistry:Lcom/google/oplus/protobuf/ExtensionRegistryLite;
+ 
+diff --git a/smali/com/oplus/ocs/camera/UxThreadPool.smali b/smali/com/oplus/ocs/camera/UxThreadPool.smali
+index c86e6bf..2f5fc6d 100644
+--- a/smali/com/oplus/ocs/camera/UxThreadPool.smali
++++ b/smali/com/oplus/ocs/camera/UxThreadPool.smali
+@@ -31,7 +31,7 @@
+ 
+ .field private static final UX_THREAD_LOCK:Ljava/lang/Object;
+ 
+-.field private static sThreadUxMap:Landroid/util/SparseArray; = null
++.field private static sThreadUxMap:Landroid/util/SparseArray;
+     .annotation system Ldalvik/annotation/Signature;
+         value = {
+             "Landroid/util/SparseArray<",
+@@ -52,7 +52,7 @@
+     .end annotation
+ .end field
+ 
+-.field private static sbHasSetUx:Z = false
++.field private static sbHasSetUx:Z
+ 
+ 
+ # instance fields
+diff --git a/smali/com/oplus/ocs/camera/common/parameter/apsadapter/ApsHelper.smali b/smali/com/oplus/ocs/camera/common/parameter/apsadapter/ApsHelper.smali
+index 2c12a69..81757ae 100644
+--- a/smali/com/oplus/ocs/camera/common/parameter/apsadapter/ApsHelper.smali
++++ b/smali/com/oplus/ocs/camera/common/parameter/apsadapter/ApsHelper.smali
+@@ -10,7 +10,7 @@
+ 
+ .field private static TAG:Ljava/lang/String; = "ApsHelper"
+ 
+-.field private static bInit:Z = false
++.field private static bInit:Z
+ 
+ .field private static mClazzField:Ljava/lang/reflect/Field;
+ 
+diff --git a/smali/com/oplus/ocs/camera/common/util/OsenseKeyThreadHelper.smali b/smali/com/oplus/ocs/camera/common/util/OsenseKeyThreadHelper.smali
+index d4ab463..81d3332 100644
+--- a/smali/com/oplus/ocs/camera/common/util/OsenseKeyThreadHelper.smali
++++ b/smali/com/oplus/ocs/camera/common/util/OsenseKeyThreadHelper.smali
+@@ -12,7 +12,7 @@
+ 
+ .field private static final sOsenseEventLock:Ljava/lang/Object;
+ 
+-.field private static sOsenseInit:Z = false
++.field private static sOsenseInit:Z
+ 
+ .field private static sOsenseResClient:Lcom/oplus/osense/OsenseResClient;
+ 
+diff --git a/smali/com/oplus/ocs/camera/consumer/ApsDataConvert.smali b/smali/com/oplus/ocs/camera/consumer/ApsDataConvert.smali
+index 9b9f82d..9f15dd6 100644
+--- a/smali/com/oplus/ocs/camera/consumer/ApsDataConvert.smali
++++ b/smali/com/oplus/ocs/camera/consumer/ApsDataConvert.smali
+@@ -88,7 +88,7 @@
+ 
+ .field private static final TAG:Ljava/lang/String; = "ApsDataConvert"
+ 
+-.field private static sbUnderWaterVideoStatus:Z = false
++.field private static sbUnderWaterVideoStatus:Z
+ 
+ 
+ # direct methods
+diff --git a/smali/com/oplus/ocs/camera/consumer/apsAdapter/ALog.smali b/smali/com/oplus/ocs/camera/consumer/apsAdapter/ALog.smali
+index 8045fc6..aa3c7f2 100644
+--- a/smali/com/oplus/ocs/camera/consumer/apsAdapter/ALog.smali
++++ b/smali/com/oplus/ocs/camera/consumer/apsAdapter/ALog.smali
+@@ -6,11 +6,11 @@
+ # static fields
+ .field private static final TAG:Ljava/lang/String; = "ALog"
+ 
+-.field private static volatile sEnable:Z = false
++.field private static volatile sEnable:Z
+ 
+-.field private static volatile sJNILoadFailed:Z = false
++.field private static volatile sJNILoadFailed:Z
+ 
+-.field private static volatile sLogEncryptEnable:Z = false
++.field private static volatile sLogEncryptEnable:Z
+ 
+ 
+ # direct methods

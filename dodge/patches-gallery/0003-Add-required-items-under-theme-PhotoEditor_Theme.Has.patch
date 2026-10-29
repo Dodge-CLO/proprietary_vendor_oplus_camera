@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Saikiran <bjsaikiran@gmail.com>
+Date: Thu, 29 Oct 2026 08:25:38 +0000
+Subject: [PATCH 3/4] Add required items under theme PhotoEditor_Theme.Hassel
+
+---
+ res/values/styles.xml | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/res/values/styles.xml b/res/values/styles.xml
+index dd16d2242..8c8bca3e9 100644
+--- a/res/values/styles.xml
++++ b/res/values/styles.xml
+@@ -6995,6 +6995,9 @@
+         <item name="couiColorPrimaryTextOnPopup">@color/coui_color_primary_on_popup_orange_light</item>
+         <item name="couiColorSecondary">@color/coui_color_secondary_orange_light</item>
+         <item name="videoEditorActionBarDoneTextColorPressed">@color/action_bar_done_text_color_pressed_hassel</item>
++        <item name="de_toolkit_undo_drawable_m">@drawable/de_toolkit_ic_undo_selector_night_m</item>
++        <item name="de_toolkit_redo_drawable_m">@drawable/de_toolkit_ic_redo_selector_night_m</item>
++        <item name="de_toolkit_stroke_size_tint">#ffffffff</item>
+     </style>
+     <style name="PictureBottomActionBarIcon">
+         <item name="android:background">@null</item>

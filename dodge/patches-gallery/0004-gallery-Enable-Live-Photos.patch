@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Saikiran <bjsaikiran@gmail.com>
+Date: Thu, 29 Oct 2026 08:26:40 +0000
+Subject: [PATCH 4/4] gallery: Enable Live Photos
+
+---
+ smali/com/oplus/aiunit/vision/e7b.smali | 42 +++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/smali/com/oplus/aiunit/vision/e7b.smali b/smali/com/oplus/aiunit/vision/e7b.smali
+index 205c158de..b3f6c2f27 100644
+--- a/smali/com/oplus/aiunit/vision/e7b.smali
++++ b/smali/com/oplus/aiunit/vision/e7b.smali
+@@ -156,6 +156,48 @@
+     .annotation runtime Lkotlin/jvm/JvmStatic;
+     .end annotation
+ 
++    # Live Photo (Olive) is supported on this device: force its keys on.
++    const-string v0, "feature_is_support_olive"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_olive_enabled
++
++    const-string v0, "feature_is_support_olive_slide_play"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_olive_enabled
++
++    const-string v0, "feature_is_support_video_extract_olive"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_olive_enabled
++
++    const-string v0, "feature_olive_slow_motion_recommend_popup_shown"
++
++    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-nez v1, :cond_olive_enabled
++
++    goto :goto_olive_done
++
++    :cond_olive_enabled
++    const/4 v0, 0x1
++
++    return v0
++
++    :goto_olive_done
++
+     .line 1
+     invoke-virtual {p0}, Ljava/lang/Object;->getClass()Ljava/lang/Class;
+ 
