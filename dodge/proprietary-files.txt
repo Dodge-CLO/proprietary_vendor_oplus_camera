@@ -124,7 +124,8 @@ system/app/ExtensionsService/ExtensionsService.apk
 system/etc/permissions/privapp-permissions-oplus.xml
 
 my_product/etc/camera/engineer_camera_config.json:product/etc/camera/engineer_camera_config.json
-system_ext/lib64/liboplushwui_jni.so
+# Pinned to OOS16 CPH2649_11.A.01, COS17 needs private libhwui symbols
+system_ext/lib64/liboplushwui_jni.so|3ecacd7d0d732ac2ef0a18fed2483626f8a0c2a7
 
 system_ext/lib64/libcsextimpl.so
 
