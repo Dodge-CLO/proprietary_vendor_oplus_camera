@@ -957,6 +957,7 @@ def blob_fixup_stdid_receiver_flags(ctx, file, file_path, *args, tmp_dir=None, *
         smali.write_text(fixed, encoding='utf-8')
 
 
+GALLERY_X8_SIGNATURE = '.method public final x8(Ljava/lang/String;Z)Ljava/lang/Boolean;'
 GALLERY_OLIVE_DONE_ANCHOR = '    :goto_olive_done\n'
 
 # Off OOS no AppFeature provider answers, so these read false.
@@ -1027,6 +1028,61 @@ def blob_fixup_gallery_force_flags(ctx, file, file_path, *args, tmp_dir=None, **
         encoding='utf-8',
     )
 
+    # Same flags on the ConfigAbility getter x8(String, boolean).
+    getter = None
+    for candidate in sorted(
+        root.glob('smali*/com/oplus/gallery/framework/abilities/config/*.smali')
+    ):
+        text = candidate.read_text(encoding='utf-8')
+        if GALLERY_X8_SIGNATURE in text:
+            getter = candidate
+            break
+    if getter is None:
+        raise RuntimeError(
+            'gallery: the ConfigAbility boolean getter x8(String, boolean) is '
+            'missing, so the HDR flags cannot be forced on its path.'
+        )
+
+    text = getter.read_text(encoding='utf-8')
+    if 'cond_force_x8_true' in text:
+        return
+
+    chain = ''
+    for flag in GALLERY_FORCED_FLAGS:
+        chain += (
+            f'    const-string v0, "{flag}"\n'
+            '\n'
+            '    invoke-virtual {v0, p1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z\n'
+            '\n'
+            '    move-result v1\n'
+            '\n'
+            '    if-nez v1, :cond_force_x8_true\n'
+            '\n'
+        )
+    inject = (
+        chain
+        + '    goto :goto_force_x8_done\n'
+        '\n'
+        '    :cond_force_x8_true\n'
+        '    const/4 v0, 0x1\n'
+        '\n'
+        '    invoke-static {v0}, Ljava/lang/Boolean;->valueOf(Z)Ljava/lang/Boolean;\n'
+        '\n'
+        '    move-result-object v0\n'
+        '\n'
+        '    return-object v0\n'
+        '\n'
+        '    :goto_force_x8_done\n'
+        '\n'
+    )
+    head = GALLERY_X8_SIGNATURE + '\n    .locals 2\n'
+    if head not in text:
+        raise RuntimeError(
+            'gallery: ConfigAbility x8 no longer starts with .locals 2; the '
+            'forced-flag injection needs to be redone for this blob.'
+        )
+    getter.write_text(text.replace(head, head + '\n' + inject, 1), encoding='utf-8')
+
 
 GALLERY_CHECKS = (
     # patches-gallery/0001: oppo-only android:permission attributes removed.
@@ -1056,6 +1112,11 @@ GALLERY_CHECKS = (
         'HDR viewer and 10-bit decode flags forced',
         ':cond_force_10bit_true',
         'smali/com/oplus/aiunit/vision/e7b.smali',
+    ),
+    Check(
+        'HDR flags forced on the ConfigAbility getter',
+        ':cond_force_x8_true',
+        'smali_classes2/com/oplus/gallery/framework/abilities/config/a.smali',
     ),
 )
 
