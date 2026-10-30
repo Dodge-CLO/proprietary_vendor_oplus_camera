@@ -1,0 +1,8 @@
+# Same access installd has on app_data_file_type
+allow installd oplus_gallery_data_file:dir { create_dir_perms relabelfrom relabelto };
+allow installd oplus_gallery_data_file:notdevfile_class_set
+    { create_file_perms relabelfrom relabelto };
+
+allow installd oplus_aiunit_data_file:dir { create_dir_perms relabelfrom relabelto };
+allow installd oplus_aiunit_data_file:notdevfile_class_set
+    { create_file_perms relabelfrom relabelto };

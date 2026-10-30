@@ -58,4 +58,48 @@
         <permission name="android.permission.MANAGE_USERS"/>
         <permission name="android.permission.INSTALL_PACKAGES"/>
     </privapp-permissions>
+
+    <!-- AIUnit — on-device AI engine -->
+    <privapp-permissions package="com.oplus.aiunit">
+        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+        <permission name="android.permission.WRITE_SECURE_SETTINGS"/>
+        <permission name="android.permission.WRITE_SETTINGS"/>
+        <permission name="android.permission.SYSTEM_ALERT_WINDOW"/>
+        <permission name="android.permission.FOREGROUND_SERVICE"/>
+        <permission name="android.permission.FOREGROUND_SERVICE_DATA_SYNC"/>
+        <permission name="android.permission.POST_NOTIFICATIONS"/>
+        <permission name="android.permission.READ_PHONE_STATE"/>
+    </privapp-permissions>
+
+    <!-- AONService — always-on camera AI -->
+    <privapp-permissions package="com.aiunit.aon">
+        <permission name="android.permission.CAMERA"/>
+        <permission name="android.permission.SYSTEM_CAMERA"/>
+        <permission name="android.permission.CAMERA_OPEN_CLOSE_LISTENER"/>
+        <permission name="android.permission.FOREGROUND_SERVICE"/>
+        <permission name="android.permission.FOREGROUND_SERVICE_CAMERA"/>
+        <permission name="android.permission.WRITE_SETTINGS"/>
+        <permission name="android.permission.START_ACTIVITIES_FROM_BACKGROUND"/>
+        <permission name="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+        <permission name="android.permission.MANAGE_USERS"/>
+        <permission name="android.permission.UPDATE_DEVICE_STATS"/>
+        <permission name="android.permission.MANAGE_BIOMETRIC"/>
+        <permission name="android.permission.USE_BIOMETRIC_INTERNAL"/>
+    </privapp-permissions>
+
+    <!-- StdID — OUID provider for gallery/AI -->
+    <privapp-permissions package="com.oplus.stdid">
+        <permission name="android.permission.INTERACT_ACROSS_USERS"/>
+        <permission name="android.permission.QUERY_ALL_PACKAGES"/>
+    </privapp-permissions>
+
+    <!-- VideoGallery -->
+    <privapp-permissions package="com.coloros.video">
+        <permission name="android.permission.WRITE_SETTINGS"/>
+        <permission name="android.permission.FOREGROUND_SERVICE"/>
+        <permission name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
+        <permission name="android.permission.ACCESS_MEDIA_PROVIDER"/>
+    </privapp-permissions>
+
+
 </permissions>

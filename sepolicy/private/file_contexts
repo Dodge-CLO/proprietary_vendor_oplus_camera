@@ -1,0 +1,6 @@
+/data/data/com\.oneplus\.gallery/files/component(/.*)?      u:object_r:oplus_gallery_data_file:s0
+/data/data/com\.oplus\.aiunit/files/Engine(/.*)?            u:object_r:oplus_aiunit_data_file:s0
+/data/data/com\.oplus\.aiunit/files/Plugin(/.*)?            u:object_r:oplus_aiunit_data_file:s0
+/data/data/com\.oplus\.aiunit/files/Detector(/.*)?          u:object_r:oplus_aiunit_data_file:s0
+/data/data/com\.oplus\.aiunit/files/OAA(/.*)?               u:object_r:oplus_aiunit_data_file:s0
+/data/data/com\.oplus\.aiunit/files/OAP(/.*)?               u:object_r:oplus_aiunit_data_file:s0

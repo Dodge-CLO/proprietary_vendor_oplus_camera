@@ -1,0 +1,20 @@
+# Gallery loads downloaded Retouch libraries from files/component
+allow platform_app oplus_gallery_data_file:dir create_dir_perms;
+allow platform_app oplus_gallery_data_file:file { create_file_perms execute };
+type_transition platform_app app_data_file:dir oplus_gallery_data_file "component";
+
+# AIUnit loads downloaded engines and plugins from its files dir
+allow platform_app oplus_aiunit_data_file:dir create_dir_perms;
+allow platform_app oplus_aiunit_data_file:file { create_file_perms execute };
+
+# Preinstalled packs are symlinked into files/<Kind>
+allow platform_app oplus_aiunit_data_file:lnk_file create_file_perms;
+type_transition platform_app app_data_file:dir oplus_aiunit_data_file "Engine";
+type_transition platform_app app_data_file:dir oplus_aiunit_data_file "Plugin";
+type_transition platform_app app_data_file:dir oplus_aiunit_data_file "Detector";
+type_transition platform_app app_data_file:dir oplus_aiunit_data_file "OAA";
+type_transition platform_app app_data_file:dir oplus_aiunit_data_file "OAP";
+
+# Gallery reads the oplus touch properties when setting up the editor surface.
+# From AlphaDroid db752670.
+get_prop(platform_app, system_oplus_touch_prop)

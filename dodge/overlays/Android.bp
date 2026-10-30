@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: Apache-2.0
+//
+// The APKs are extracted from the dump by extract-files.py.
+
+prebuilt_overlay {
+    name: "aon.frameworkres.overlay.product",
+    owner: "oplus",
+    src: "aon.frameworkres.overlay.product.apk",
+    filename_from_src: true,
+    product_specific: true,
+}
+
+prebuilt_overlay {
+    name: "OplusAiConfigOverlayCommon",
+    owner: "oplus",
+    src: "OplusAiConfigOverlayCommon/OplusAiConfigOverlayCommon.apk",
+    filename_from_src: true,
+    sub_dir: "OplusAiConfigOverlayCommon",
+    product_specific: true,
+}
+
+prebuilt_overlay {
+    name: "OplusCameraBigBallConfigOverlay",
+    owner: "oplus",
+    src: "OplusCameraBigBallConfigOverlay/OplusCameraBigBallConfigOverlay.apk",
+    filename_from_src: true,
+    sub_dir: "OplusCameraBigBallConfigOverlay",
+    product_specific: true,
+}

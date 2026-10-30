@@ -1,0 +1,3 @@
+# Not app_data_file_type, sepolicy_test rejects it on file_contexts types
+type oplus_gallery_data_file, file_type, data_file_type, core_data_file_type;
+type oplus_aiunit_data_file, file_type, data_file_type, core_data_file_type;

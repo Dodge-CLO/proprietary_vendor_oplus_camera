@@ -65,3 +65,9 @@ $(call inherit-product, vendor/oplus/camera/dodge/blobs/blobs-vendor.mk)
 
 # Common SEpolicy
 include vendor/oplus/camera/sepolicy/SEPolicy.mk
+
+# Overlays
+PRODUCT_PACKAGES += \
+    aon.frameworkres.overlay.product \
+    OplusAiConfigOverlayCommon \
+    OplusCameraBigBallConfigOverlay

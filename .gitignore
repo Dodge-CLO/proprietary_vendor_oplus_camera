@@ -1,3 +1,6 @@
 */blobs/*
 # aston ships its generated blobs; the patched OplusCamera.apk goes through Git LFS
 !aston/blobs/
+# dodge overlays are extracted from the dump
+dodge/overlays/*
+!dodge/overlays/Android.bp
