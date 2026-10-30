@@ -81,6 +81,8 @@
 /(vendor|odm)/lib(64)?/libc\+\+_shared\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libarc.fusion\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libaiboost_te\.so    u:object_r:same_process_hal_file:s0
+# Loaded by AIUnit and AONService
+/(vendor|odm)/lib(64)?/libaiboost(_llm|_qnn_sr|_sr|_ubwc)?\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libwrapper_te\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libVDBlurless\.so    u:object_r:same_process_hal_file:s0
 /(vendor|odm)/lib(64)?/libvdblurless\.so    u:object_r:same_process_hal_file:s0
