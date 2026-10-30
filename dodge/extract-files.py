@@ -969,6 +969,8 @@ GALLERY_FORCED_FLAGS = (
     'feature_is_support_10bit_decode',
     # Badge gate, not the View with ProXDR toggle
     'local_hdr_switch_read',
+    # Use Display.getHdrSdrRatio() instead of the ColorOS listener
+    'feature_is_support_edr_listener',
 )
 
 
