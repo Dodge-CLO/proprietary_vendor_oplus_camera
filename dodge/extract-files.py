@@ -242,7 +242,13 @@ GALLERY_OLIVE_DONE_ANCHOR = '    :goto_olive_done\n'
 
 # Off OOS no AppFeature provider answers, so these read false.
 GALLERY_FORCED_FLAGS = (
+    # ProXDR badge
+    'feature_is_support_local_hdr',
+    'feature_is_support_ultra_hdr',
+    # 10-bit decode
     'feature_is_support_10bit_decode',
+    # Badge gate, not the View with ProXDR toggle
+    'local_hdr_switch_read',
 )
 
 
@@ -328,7 +334,7 @@ GALLERY_CHECKS = (
     ),
     # blob_fixup_gallery_force_flags: 10-bit decode forced on.
     Check(
-        '10-bit decode forced',
+        'HDR viewer and 10-bit decode flags forced',
         ':cond_force_10bit_true',
         'smali/com/oplus/aiunit/vision/e7b.smali',
     ),
