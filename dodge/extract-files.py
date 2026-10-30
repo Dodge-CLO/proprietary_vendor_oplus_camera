@@ -238,6 +238,71 @@ SDK_CHECKS = (
     ),
 )
 
+GALLERY_OLIVE_DONE_ANCHOR = '    :goto_olive_done\n'
+
+# Off OOS no AppFeature provider answers, so these read false.
+GALLERY_FORCED_FLAGS = (
+    'feature_is_support_10bit_decode',
+)
+
+
+def blob_fixup_gallery_force_flags(ctx, file, file_path, *args, tmp_dir=None, **kwargs):
+    # Extend the keys patches-gallery/0004 forces on.
+    if tmp_dir is None:
+        return
+
+    root = Path(tmp_dir)
+    smali = None
+    for candidate in sorted(root.glob('smali*/com/oplus/**/*.smali')):
+        if GALLERY_OLIVE_DONE_ANCHOR in candidate.read_text(encoding='utf-8'):
+            smali = candidate
+            break
+    if smali is None:
+        raise RuntimeError(
+            'gallery: the 0004 olive anchor is missing, so the feature flags '
+            'cannot be forced. patches-gallery/0004 has probably stopped '
+            'applying against this blob.'
+        )
+
+    data = smali.read_text(encoding='utf-8')
+    if 'cond_force_10bit_true' in data:
+        return
+
+    chain = ''
+    for flag in GALLERY_FORCED_FLAGS:
+        chain += (
+            f'    const-string v0, "{flag}"\n'
+            '\n'
+            '    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z\n'
+            '\n'
+            '    move-result v1\n'
+            '\n'
+            '    if-nez v1, :cond_force_10bit_true\n'
+            '\n'
+        )
+
+    # Reuses v0/v1 like 0004.
+    inject = (
+        chain
+        + '    goto :goto_force_10bit_done\n'
+        '\n'
+        '    :cond_force_10bit_true\n'
+        '    const/4 v0, 0x1\n'
+        '\n'
+        '    return v0\n'
+        '\n'
+        '    :goto_force_10bit_done\n'
+        '\n'
+    )
+
+    smali.write_text(
+        data.replace(
+            GALLERY_OLIVE_DONE_ANCHOR, GALLERY_OLIVE_DONE_ANCHOR + '\n' + inject, 1
+        ),
+        encoding='utf-8',
+    )
+
+
 GALLERY_CHECKS = (
     # patches-gallery/0001: oppo-only android:permission attributes removed.
     Check(
@@ -259,6 +324,12 @@ GALLERY_CHECKS = (
     Check(
         '0004 live photos',
         ':cond_olive_enabled',
+        'smali/com/oplus/aiunit/vision/e7b.smali',
+    ),
+    # blob_fixup_gallery_force_flags: 10-bit decode forced on.
+    Check(
+        '10-bit decode forced',
+        ':cond_force_10bit_true',
         'smali/com/oplus/aiunit/vision/e7b.smali',
     ),
 )
@@ -355,6 +426,7 @@ blob_fixups = {
     'system_ext/priv-app/OppoGallery2/OppoGallery2.apk': blob_fixup()
         .apktool_unpack('patches-gallery')
         .patch_dir('patches-gallery')
+        .call(blob_fixup_gallery_force_flags)
         .call(verify('OppoGallery2', *GALLERY_CHECKS))
         .apktool_pack()
         .stripzip(),
