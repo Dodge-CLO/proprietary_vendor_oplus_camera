@@ -1,0 +1,145 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Oscar M <osm1019@gmail.com>
+Date: Sat, 9 Aug 2026 12:00:00 -0700
+Subject: [PATCH] dodge: Enable real-time 1080p/4K 120fps and clamp 8K to 30fps
+
+Ported to the COS17 OplusCamera. Obfuscated names mapped by method body:
+module/a X8 -> u9, wj -> Kk; ak/s0 -> gn/o0 (A, v, y unchanged);
+ka/a -> td/b.l; ka/i j1 -> td/g.o1, fps register v12 -> v13.
+
+- u9() returns operation mode 1 (constrained high speed) at 120fps.
+- gn/o0 records profiles above 60fps at 120fps and clamps 8K to 30fps.
+- td/b.l() accepts 120fps next to 60fps for the high frame rate sizes.
+- td/g.buildSession() sends video_30fps for video_size_8k.
+---
+
+diff --git a/smali_classes12/com/oplus/camera/module/a.smali b/smali_classes12/com/oplus/camera/module/a.smali
+index 2aa7e534..458bcff6 100644
+--- a/smali_classes12/com/oplus/camera/module/a.smali
++++ b/smali_classes12/com/oplus/camera/module/a.smali
+@@ -41737,6 +41737,19 @@
+ .method public u9()I
+     .locals 6
+ 
++    invoke-virtual {p0}, Lcom/oplus/camera/module/a;->Kk()I
++
++    move-result v0
++
++    const/16 v1, 0x78
++
++    if-ne v0, v1, :cond_fps120_passthru
++
++    const/4 v0, 0x1
++
++    return v0
++
++    :cond_fps120_passthru
+     .line 1
+     invoke-virtual {p0}, Lcom/oplus/camera/module/BaseMode;->isFrontCamera()Z
+ 
+diff --git a/smali_classes12/gn/o0.smali b/smali_classes12/gn/o0.smali
+index 16927df4..ad6d59b7 100644
+--- a/smali_classes12/gn/o0.smali
++++ b/smali_classes12/gn/o0.smali
+@@ -674,6 +674,16 @@
+ .method public final A(II)V
+     .locals 2
+ 
++    const/16 v0, 0x1e00
++
++    if-lt p1, v0, :cond_8k_size_done
++
++    const/16 v0, 0x1e
++
++    invoke-virtual {p0, v0}, Lgn/o0;->y(I)V
++
++    :cond_8k_size_done
++
+     .line 1
+     const/4 v0, 0x2
+ 
+@@ -7338,7 +7348,23 @@
+ .end method
+ 
+ .method public final v(Landroid/media/CamcorderProfile;)V
+-    .locals 3
++    .locals 4
++
++    iget v0, p1, Landroid/media/CamcorderProfile;->videoFrameWidth:I
++
++    const/16 v1, 0x1e00
++
++    if-lt v0, v1, :cond_8k_profile_done
++
++    iget v0, p1, Landroid/media/CamcorderProfile;->videoFrameRate:I
++
++    const/16 v1, 0x1e
++
++    if-le v0, v1, :cond_8k_profile_done
++
++    iput v1, p1, Landroid/media/CamcorderProfile;->videoFrameRate:I
++
++    :cond_8k_profile_done
+ 
+     .line 1
+     iget v0, p0, Lgn/o0;->v:I
+@@ -7410,6 +7436,13 @@
+     .line 32
+     iget v1, p1, Landroid/media/CamcorderProfile;->videoFrameRate:I
+ 
++    const/16 v2, 0x3c
++
++    if-le v1, v2, :cond_fps_not_high
++
++    const/16 v1, 0x78
++
++    :cond_fps_not_high
+     .line 33
+     .line 34
+     invoke-virtual {v0, v1}, Landroid/media/MediaRecorder;->setVideoFrameRate(I)V
+diff --git a/smali_classes4/td/b.smali b/smali_classes4/td/b.smali
+index 7bff6536..1742a3bc 100644
+--- a/smali_classes4/td/b.smali
++++ b/smali_classes4/td/b.smali
+@@ -1924,10 +1924,15 @@
+     move-result p0
+ 
+     .line 102
++    if-eq p1, p0, :cond_fps120_ok
++
++    const/16 p1, 0x78
++
+     if-ne p1, p0, :cond_7
+ 
+     .line 103
+     .line 104
++    :cond_fps120_ok
+     const/4 v2, 0x1
+ 
+     .line 105
+diff --git a/smali_classes4/td/g.smali b/smali_classes4/td/g.smali
+index 224e1204..90c9ca58 100644
+--- a/smali_classes4/td/g.smali
++++ b/smali_classes4/td/g.smali
+@@ -1879,6 +1879,21 @@
+ 
+     .line 746
+     :goto_10
++    invoke-virtual/range {p0 .. p0}, Ltd/g;->o1()Ljava/lang/String;
++
++    move-result-object v1
++
++    const-string v2, "video_size_8k"
++
++    invoke-virtual {v2, v1}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
++
++    move-result v1
++
++    if-eqz v1, :cond_8k_session_done
++
++    const-string v13, "video_30fps"
++
++    :cond_8k_session_done
+     sget-object v1, Lcom/oplus/ocs/camera/CameraParameter;->VIDEO_FPS:Lcom/oplus/ocs/camera/CameraParameter$ConfigureKey;
+ 
+     .line 747
