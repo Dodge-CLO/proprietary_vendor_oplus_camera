@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<packages>
+    <default-grant-permissions package="com.aiunit.aon" >
+        <permission name="android.permission.CAMERA"/>
+    </default-grant-permissions>
+</packages>
